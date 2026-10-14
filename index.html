@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MYTH</title>
+<meta name="description" content="Pick a god. It runs the fees. Holders vote every 6 hours; the leading god takes the temple.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mythsol.vercel.app/">
+<meta property="og:title" content="MYTH">
+<meta property="og:description" content="Pick a god. It runs the fees. Every 6 hours the leading god takes the temple.">
+<meta property="og:image" content="https://mythsol.vercel.app/api/og">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MYTH">
+<meta name="twitter:description" content="Pick a god. It runs the fees. Every 6 hours the leading god takes the temple.">
+<meta name="twitter:image" content="https://mythsol.vercel.app/api/og">
+<meta name="theme-color" content="#0e0a20">
+<link rel="icon" id="fav" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0a20;--bg2:#160f30;--card:#1c1438;--line:#2c2152;--ink:#f4efff;--mut:#b9b0d8;--dim:#8a80b0;--gold:#ffd34d;--gold2:#e0a530;--ol:#07050f;
+--zeus:#5a8cff;--poseidon:#38e0d0;--hades:#b06aff;--hermes:#5ef09a;
+--sans:"Inter Tight","Noto Sans","Liberation Sans",system-ui,sans-serif;--px:"Silkscreen","DejaVu Sans Mono",monospace}
+*{box-sizing:border-box}
+html{overflow-x:hidden;scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;overflow-x:clip;color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;background:linear-gradient(180deg,#0e0a20 0,#160f30 60%,#0e0a20 100%)}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding-left:24px;padding-right:24px}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.hidden{display:none!important}
+.frame{border:4px solid var(--ol);box-shadow:0 0 0 4px var(--line),8px 8px 0 4px var(--ol)}
+nav{position:sticky;top:0;z-index:20;background:rgba(14,10,32,.94);border-bottom:4px solid var(--ol)}
+nav .wrap{display:flex;align-items:center;gap:14px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font:700 22px var(--px);text-decoration:none;color:var(--gold);text-shadow:2px 2px 0 var(--ol);letter-spacing:.06em}
+.brand canvas{width:30px;height:30px}
+.sp{flex:1}
+.chip{font:400 12px var(--px);padding:7px 10px;border:3px solid var(--ol);box-shadow:0 0 0 2px var(--line);color:var(--mut);background:var(--bg2);cursor:pointer;white-space:nowrap;text-transform:uppercase}
+.chip b{color:var(--gold);font-weight:400}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:3px solid var(--ol);cursor:pointer;font:400 13px var(--px);text-transform:uppercase;letter-spacing:.04em;padding:10px 16px;background:var(--gold);color:#1b1408;box-shadow:4px 4px 0 var(--ol);text-decoration:none;transition:transform .06s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ol)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ol)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:4px 4px 0 var(--ol)}
+.btn.alt{background:var(--card);color:var(--ink)}
+.hero{padding-top:26px}
+.stage{position:relative;background:var(--bg);cursor:pointer}
+.stage canvas{display:block;width:100%;height:auto}
+.bar{margin-top:26px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 30px;align-items:end}
+h1{margin:0;font:400 clamp(26px,4vw,46px)/1.08 var(--px);text-transform:uppercase;text-shadow:4px 4px 0 var(--ol)}
+h1 em{font-style:normal;color:var(--gold)}
+.stats{display:grid;grid-template-columns:repeat(3,auto);gap:4px 28px}
+.stat span{display:block;font:400 11px var(--px);color:var(--dim);text-transform:uppercase}
+.stat b{display:block;font:700 22px var(--px);color:var(--ink);white-space:nowrap}
+.stat small{display:block;font-size:13px;color:var(--mut);min-height:1.4em}
+.sec{padding-top:64px}
+.sec h2{display:flex;align-items:baseline;gap:12px;margin:0 0 20px;font:400 22px var(--px);text-transform:uppercase;text-shadow:3px 3px 0 var(--ol)}
+.sec h2 span{color:var(--gold)}
+.sec h2 small{margin-left:auto;font:500 14px var(--sans);color:var(--dim);text-transform:none;text-shadow:none}
+.gods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.god{position:relative;background:var(--card);padding:18px 16px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.god .ic{width:72px;height:72px;margin:0 auto}
+.god h3{margin:0;text-align:center;font:700 20px var(--px);letter-spacing:.06em;color:var(--gc)}
+.god p{margin:0;text-align:center;color:var(--mut);font-size:15px;min-height:2.9em}
+.meter{height:14px;border:3px solid var(--ol);background:var(--bg)}
+.meter i{display:block;height:100%;width:0;background:var(--gc);transition:width .5s}
+.nums{display:flex;justify-content:space-between;font:400 12px var(--px);color:var(--mut);text-transform:uppercase}
+.nums b{color:var(--ink);font-weight:400}
+.god .btn{width:100%}
+.god.lead{box-shadow:0 0 0 4px var(--gc),8px 8px 0 4px var(--ol)}
+.tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font:400 11px var(--px);background:var(--gc);color:var(--ol);padding:3px 8px;border:3px solid var(--ol);white-space:nowrap;text-transform:uppercase}
+.god.mine .tag.you{display:block}
+.msg{margin:16px 0 0;min-height:1.6em;color:var(--mut);font-size:15px}
+.msg a{color:var(--gold)}
+.msg.err{color:#ff8a8a}
+.round{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}
+.panel{background:var(--card);padding:22px}
+.panel .k{font:400 11px var(--px);color:var(--dim);text-transform:uppercase}
+.big{font:700 clamp(40px,7vw,72px)/1 var(--px);color:var(--gold);text-shadow:4px 4px 0 var(--ol);margin:8px 0 6px}
+.slots{display:flex;gap:10px;margin-top:14px}
+.slot{flex:1;text-align:center;font:400 14px var(--px);padding:8px 0;border:3px solid var(--ol);background:var(--bg);color:var(--dim)}
+.slot.next{background:var(--gold);color:var(--ol)}
+.line{margin-top:14px;color:var(--mut);font-size:15px}
+.line b{color:var(--ink)}
+.line a{color:var(--gold)}
+.rules{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.rule{background:var(--card);padding:18px}
+.rule b{display:block;font:400 26px var(--px);color:var(--gold);text-shadow:3px 3px 0 var(--ol)}
+.rule h4{margin:6px 0 4px;font:400 14px var(--px);text-transform:uppercase}
+.rule p{margin:0;color:var(--mut);font-size:15px}
+footer{margin-top:80px;border-top:4px solid var(--ol);background:var(--bg2);padding:26px 0 40px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;font-size:14px;color:var(--dim)}
+footer a{color:var(--mut)}
+dialog{border:4px solid var(--ol);background:var(--card);color:var(--ink);padding:22px;box-shadow:8px 8px 0 var(--ol);max-width:340px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(7,5,15,.7)}
+dialog h3{margin:0 0 14px;font:400 16px var(--px);text-transform:uppercase}
+.wl{display:grid;gap:10px}
+.wl button{display:flex;align-items:center;gap:10px;padding:10px;border:3px solid var(--ol);background:var(--bg2);cursor:pointer;text-align:left}
+.wl img{width:24px;height:24px}
+@media (max-width:900px){.gods,.rules{grid-template-columns:repeat(2,minmax(0,1fr))}.bar{grid-template-columns:minmax(0,1fr)}.round{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.wrap{padding-left:16px;padding-right:16px}nav .chip{display:none}.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 14px}.stat b{font-size:17px}.gods{gap:14px}.god{padding:16px 10px 12px}.god .ic{width:56px;height:56px}.god h3{font-size:16px}.god p{font-size:13px}.nums{font-size:10px}.god .btn{font-size:11px;padding:9px 6px}.rules{grid-template-columns:minmax(0,1fr)}.sec h2 small{display:none}}
+@media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="brand" href="#top" aria-label="myth home"><canvas id="logo" class="px" width="32" height="32"></canvas>MYTH</a>
+  <span class="sp"></span>
+  <button class="chip" id="caChip" type="button" title="copy contract address">CA <b id="ca">—</b></button>
+  <button class="btn" id="connect" type="button">connect</button>
+</div></nav>
+
+<header class="hero wrap" id="top">
+  <div class="stage frame" id="stage"><canvas id="scene" class="px" aria-label="the myth temple on olympus"></canvas></div>
+  <div class="bar">
+    <h1>pick a god.<br><em>it runs the fees.</em></h1>
+    <div class="stats">
+      <div class="stat"><span>temple</span><b id="sTemple">—</b><small id="sTempleUsd"></small></div>
+      <div class="stat"><span>next round</span><b id="sNext">—</b><small id="sNextAt"></small></div>
+      <div class="stat"><span>leading</span><b id="sLead">—</b><small id="sLeadPct"></small></div>
+    </div>
+  </div>
+</header>
+
+<section class="sec wrap" id="gods">
+  <h2><span>01</span> the gods <small id="tallyNote">votes this round, weighted by $MYTH held</small></h2>
+  <div class="gods" id="godGrid"></div>
+  <p class="msg" id="msg" role="status"></p>
+</section>
+
+<section class="sec wrap" id="round">
+  <h2><span>02</span> the round</h2>
+  <div class="round">
+    <div class="panel frame">
+      <div class="k">the leading god takes the temple in</div>
+      <div class="big" id="cd">—</div>
+      <div class="slots" id="slots"></div>
+      <div class="line" id="cdSub"></div>
+    </div>
+    <div class="panel frame">
+      <div class="k">last round</div>
+      <div class="big" id="lastGod">—</div>
+      <div class="line" id="lastLine">—</div>
+      <div class="line"><a id="planLink" href="/api/plan" target="_blank" rel="noopener">payout plan ↗</a> · <a id="templeLink" href="#" target="_blank" rel="noopener">temple wallet ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="rules">
+  <h2><span>03</span> rules</h2>
+  <div class="rules">
+    <div class="rule frame"><b>1</b><h4>fees fill the temple</h4><p>85% of creator fees go to the public temple wallet.</p></div>
+    <div class="rule frame"><b>2</b><h4>hold $50, vote</h4><p>Pick a god on chain. Weight is the $MYTH you hold. Your last vote counts.</p></div>
+    <div class="rule frame"><b>3</b><h4>every 6 hours</h4><p>At 00, 06, 12 and 18 UTC the leading god takes the whole temple.</p></div>
+    <div class="rule frame"><b>4</b><h4>no votes</h4><p>The temple rolls over to the next round.</p></div>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <span id="status">temple and votes live from chain · price live from dexscreener</span>
+  <span>a vote costs one network fee · <a href="/api/votes" target="_blank" rel="noopener">raw tally ↗</a></span>
+</div></footer>
+
+<dialog id="wdlg"><h3>pick a wallet</h3><div class="wl" id="wlist"></div><p class="msg" id="wnone"></p><button class="btn alt" type="button" id="wclose">close</button></dialog>
+
+<script src="/eng.js"></script>
+<script>
+// a vote is a tiny legacy transaction built by hand (no libraries): send 1 lamport to the temple with the memo "myth:<god>".
+var TX = (function () {
+  var B58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+  var SYSTEM = "11111111111111111111111111111111", MEMO = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr";
+  function dec(s) {
+    var bytes = [0];
+    for (var i = 0; i < s.length; i++) {
+      var v = B58.indexOf(s[i]); if (v < 0) throw new Error("bad base58");
+      for (var j = 0; j < bytes.length; j++) { v += bytes[j] * 58; bytes[j] = v & 255; v >>= 8; }
+      while (v) { bytes.push(v & 255); v >>= 8; }
+    }
+    for (i = 0; i < s.length && s[i] === "1"; i++) bytes.push(0);
+    return new Uint8Array(bytes.reverse());
+  }
+  function key(s) {
+    var b = dec(s); if (b.length > 32) { var z = 0; while (b.length - z > 32 && b[z] === 0) z++; b = b.slice(z); }
+    if (b.length !== 32) { var p = new Uint8Array(32); p.set(b, 32 - b.length); b = p; }
+    return b;
+  }
+  function enc(bytes) {
+    var z = 0; while (z < bytes.length && bytes[z] === 0) z++;
+    var d = [];
+    for (var i = z; i < bytes.length; i++) {
+      var c = bytes[i];
+      for (var j = 0; j < d.length; j++) { c += d[j] << 8; d[j] = c % 58; c = (c / 58) | 0; }
+      while (c) { d.push(c % 58); c = (c / 58) | 0; }
+    }
+    var s = ""; for (i = 0; i < z; i++) s += "1";
+    for (i = d.length - 1; i >= 0; i--) s += B58[d[i]];
+    return s;
+  }
+  function cu16(n) { var o = []; for (;;) { var b = n & 0x7f; n >>= 7; if (!n) { o.push(b); return o; } o.push(b | 0x80); } }
+  function vote(payer, temple, blockhash, god) {
+    if (payer === temple) throw new Error("the temple can't vote");
+    var memo = [], txt = "myth:" + god;
+    for (var i = 0; i < txt.length; i++) memo.push(txt.charCodeAt(i));
+    var m = [1, 0, 2].concat(cu16(4));
+    [payer, temple, SYSTEM, MEMO].forEach(function (k) { m = m.concat(Array.from(key(k))); });
+    m = m.concat(Array.from(key(blockhash))).concat(cu16(2));
+    m = m.concat([2]).concat(cu16(2)).concat([0, 1]).concat(cu16(12)).concat([2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]);
+    m = m.concat([3]).concat(cu16(0)).concat(cu16(memo.length)).concat(memo);
+    var tx = new Uint8Array(1 + 64 + m.length); tx[0] = 1; tx.set(m, 65);
+    return tx;
+  }
+  function b64(bytes) { var s = ""; for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]); return btoa(s); }
+  return { dec: dec, enc: enc, key: key, vote: vote, b64: b64, MEMO: MEMO, SYSTEM: SYSTEM };
+})();
+if (typeof module !== "undefined" && module.exports) module.exports = TX;
+
+</script>
+<script>
+(function () {
+  "use strict";
+  var M = window.MYTH, ROUND = 6 * 3600 * 1000, ADDR = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
+  var GODS = [
+    { k: "zeus", name: "ZEUS", power: "buys $MYTH and burns it." },
+    { k: "poseidon", name: "POSEIDON", power: "splits it across every $50+ holder." },
+    { k: "hades", name: "HADES", power: "gives all of it to one holder." },
+    { k: "hermes", name: "HERMES", power: "splits it across this round's voters." }
+  ];
+  var CFG = { mint: null, temple: null }, S = { market: null, tally: null, bal: null, wallet: null, account: null, flash: 0, busy: false };
+  function $(id) { return document.getElementById(id); }
+  function short(a) { return a ? a.slice(0, 4) + "…" + a.slice(-4) : "—"; }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function usd(v) { return v == null ? "—" : "$" + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function sol(v) { return v == null ? "—" : (v >= 100 ? v.toFixed(1) : v >= 10 ? v.toFixed(2) : v.toFixed(3)) + " sol"; }
+  function tok(v) { return v == null ? "—" : v >= 1e9 ? (v / 1e9).toFixed(2) + "b" : v >= 1e6 ? (v / 1e6).toFixed(2) + "m" : v >= 1e3 ? (v / 1e3).toFixed(1) + "k" : String(Math.round(v)); }
+  function nextRound(ms) { return (Math.floor(ms / ROUND) + 1) * ROUND; }
+  function shares(c) {
+    var tot = 0, out = {};
+    GODS.forEach(function (g) { tot += c.gods[g.k].weight; });
+    GODS.forEach(function (g) { out[g.k] = tot > 0 ? Math.round(c.gods[g.k].weight / tot * 1000) / 10 : 0; });
+    return out;
+  }
+  function msg(t, err, html) { var m = $("msg"); m.className = "msg" + (err ? " err" : ""); if (html) m.innerHTML = t; else m.textContent = t; }
+  function api(path, body) {
+    return fetch(path, body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : { cache: "no-store" })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j && j.error || r.status); return j; }); });
+  }
+  function rpc(method, params) { return api("/api/rpc", { method: method, params: params }).then(function (j) { if (j.error) throw new Error(j.error.message || "rpc"); return j.result; }); }
+
+  // ---------- art
+  function paint(canvas, g) {
+    canvas.width = g.w; canvas.height = g.h;
+    var ctx = canvas.getContext("2d"), im = ctx.createImageData(g.w, g.h);
+    g.rgba(im.data); ctx.putImageData(im, 0, 0);
+  }
+  paint($("logo"), M.iconGrid());
+  try { $("fav").href = $("logo").toDataURL("image/png"); } catch (e) {}
+  var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var stage = $("stage"), scene = $("scene"), sceneW = 0, t0 = performance.now();
+  function draw() {
+    var wide = stage.clientWidth >= 700, W = wide ? 375 : 200, H = wide ? 125 : 150;
+    var t = (performance.now() - t0) / 1000, flash = S.flash > performance.now();
+    var g = new M.Grid(W, H);
+    M.scene(g, { t: flash ? 0.05 : t, still: still && !flash });
+    paint(scene, g); sceneW = W;
+  }
+  var last = 0;
+  function loop(now) {
+    if (!document.hidden && now - last > 90) { last = now; draw(); }
+    if (!still) requestAnimationFrame(loop);
+  }
+  draw(); if (!still) requestAnimationFrame(loop);
+  window.addEventListener("resize", function () { draw(); });
+  stage.addEventListener("click", function () { S.flash = performance.now() + 220; draw(); setTimeout(draw, 240); });
+
+  // ---------- god cards
+  var grid = $("godGrid");
+  GODS.forEach(function (g) {
+    var el = document.createElement("div");
+    el.className = "god frame"; el.id = "g-" + g.k; el.style.setProperty("--gc", "var(--" + g.k + ")");
+    el.innerHTML = '<span class="tag hidden" data-tag></span><canvas class="ic px" width="56" height="56" data-ic="' + g.k + '"></canvas><h3>' + g.name +
+      '</h3><p>' + g.power + '</p><div class="meter"><i data-bar></i></div><div class="nums"><span><b data-pct>—</b></span><span data-n>—</span></div>' +
+      '<button class="btn" type="button" data-vote="' + g.k + '">vote ' + g.name.toLowerCase() + '</button>';
+    grid.appendChild(el);
+    var ig = new M.Grid(56, 56); M.godIcon(ig, g.k, 2, 2, 2); paint(el.querySelector("canvas"), ig);
+    el.querySelector("[data-vote]").addEventListener("click", function () { vote(g.k); });
+  });
+
+  // ---------- rendering live data
+  function renderTally() {
+    var t = S.tally, live = CFG.mint && CFG.temple;
+    GODS.forEach(function (g) {
+      var el = $("g-" + g.k), tag = el.querySelector("[data-tag]");
+      el.classList.remove("lead", "mine"); tag.className = "tag hidden";
+      el.querySelector("[data-vote]").disabled = !live || S.busy;
+      if (!t || !t.live) { el.querySelector("[data-pct]").textContent = "—"; el.querySelector("[data-n]").textContent = "—"; el.querySelector("[data-bar]").style.width = "0"; return; }
+      var c = t.current, sh = shares(c), gd = c.gods[g.k];
+      el.querySelector("[data-pct]").textContent = sh[g.k] + "%";
+      el.querySelector("[data-n]").textContent = gd.wallets + (gd.wallets === 1 ? " wallet" : " wallets");
+      el.querySelector("[data-bar]").style.width = sh[g.k] + "%";
+      if (c.leader === g.k) { el.classList.add("lead"); tag.className = "tag"; tag.textContent = "leading"; }
+      if (t.you && t.you.god === g.k) { el.classList.add("mine"); tag.className = "tag"; tag.textContent = t.you.counted ? (c.leader === g.k ? "leading · your vote" : "your vote") : "your vote · under $50"; }
+    });
+    var lead = t && t.live && t.current.leader;
+    $("sLead").textContent = !t || !t.live ? "—" : lead ? lead.toUpperCase() : "no votes";
+    $("sLeadPct").textContent = lead ? shares(t.current)[lead] + "% of the vote" : t && t.live ? "the temple rolls over" : "";
+    if (t && t.live) {
+      $("lastGod").textContent = t.prev.leader ? t.prev.leader.toUpperCase() : "rolled over";
+      $("lastLine").innerHTML = t.prev.leader ? "<b>" + t.prev.voters + "</b> counted " + (t.prev.voters === 1 ? "voter" : "voters") + ". " + GODS.filter(function (g) { return g.k === t.prev.leader; })[0].name.toLowerCase() + " " + GODS.filter(function (g) { return g.k === t.prev.leader; })[0].power : "no counted votes, so the temple carried over.";
+      $("tallyNote").textContent = t.current.voters + (t.current.voters === 1 ? " counted voter" : " counted voters") + " this round · weighted by $MYTH held" + (t.partial ? " · newest 200 votes" : "");
+    } else if (t && t.error) {
+      $("lastGod").textContent = "—"; $("lastLine").textContent = "vote data unavailable right now.";
+    }
+  }
+  function renderStats() {
+    $("sTemple").textContent = S.bal == null ? "—" : sol(S.bal);
+    $("sTempleUsd").textContent = S.bal != null && S.solUsd ? usd(S.bal * S.solUsd) : "";
+    $("ca").textContent = CFG.mint ? short(CFG.mint) : "—";
+    if (CFG.temple) $("templeLink").href = "https://solscan.io/account/" + CFG.temple;
+  }
+  function tick() {
+    var now = Date.now(), nx = nextRound(now), left = Math.max(0, nx - now);
+    var hh = Math.floor(left / 3600000), mm = Math.floor(left / 60000) % 60, ss = Math.floor(left / 1000) % 60;
+    var cd = pad(hh) + ":" + pad(mm) + ":" + pad(ss);
+    $("cd").textContent = cd; $("sNext").textContent = cd;
+    var d = new Date(nx), utc = pad(d.getUTCHours()) + ":00 utc";
+    $("sNextAt").textContent = utc;
+    $("cdSub").textContent = utc + " · " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + " your time";
+    var slots = $("slots"); if (!slots.children.length) [0, 6, 12, 18].forEach(function (h) { var s = document.createElement("div"); s.className = "slot"; s.textContent = pad(h); slots.appendChild(s); });
+    Array.prototype.forEach.call(slots.children, function (s) { s.classList.toggle("next", Number(s.textContent) === d.getUTCHours()); });
+  }
+  setInterval(tick, 1000); tick();
+
+  // ---------- loading
+  function status() {
+    var bits = [];
+    bits.push(S.tally && S.tally.live ? "votes live from chain" : S.tally && S.tally.error ? "vote data unavailable right now" : "votes open at launch");
+    bits.push(S.bal != null ? "temple live from chain" : CFG.temple && S.balErr ? "temple balance unavailable right now" : null);
+    bits.push(S.market ? "price live from dexscreener" : CFG.mint && S.marketErr ? "price unavailable right now" : null);
+    $("status").textContent = bits.filter(Boolean).join(" · ") + (S.updated ? " · updated " + S.updated : "");
+  }
+  function loadTally() {
+    if (!CFG.mint || !CFG.temple) { S.tally = null; renderTally(); return Promise.resolve(); }
+    return api("/api/votes" + (S.account ? "?w=" + S.account : "")).then(function (j) { S.tally = j; })
+      .catch(function () { S.tally = { live: false, error: true }; }).then(function () { renderTally(); status(); });
+  }
+  function load() {
+    var jobs = [];
+    if (CFG.mint) jobs.push(api("/api/market?mint=" + CFG.mint).then(function (j) { S.market = j.market; S.marketErr = false; }).catch(function () { S.market = null; S.marketErr = true; }));
+    jobs.push(api("/api/market?mint=So11111111111111111111111111111111111111112").then(function (j) { S.solUsd = j.market && j.market.priceUsd; }).catch(function () { S.solUsd = null; }));
+    if (CFG.temple) jobs.push(rpc("getBalance", [CFG.temple]).then(function (r) { S.bal = r.value / 1e9; S.balErr = false; }).catch(function () { S.bal = null; S.balErr = true; }));
+    jobs.push(loadTally());
+    return Promise.all(jobs).then(function () { S.updated = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }); renderStats(); status(); });
+  }
+  api("/api/config").then(function (c) { CFG = c; }).catch(function () {}).then(function () {
+    renderStats(); renderTally();
+    if (!CFG.mint || !CFG.temple) msg("voting opens at launch.");
+    return load();
+  });
+  setInterval(function () { if (!document.hidden) load(); }, 60000);
+  $("caChip").addEventListener("click", function () {
+    if (!CFG.mint) return;
+    (navigator.clipboard ? navigator.clipboard.writeText(CFG.mint) : Promise.reject()).then(function () { $("ca").textContent = "copied"; setTimeout(renderStats, 1200); }).catch(function () {});
+  });
+
+  // ---------- wallets (wallet standard)
+  var wallets = [];
+  var reg = { register: function () { for (var i = 0; i < arguments.length; i++) { var w = arguments[i]; if (w && w.features && w.features["standard:connect"] && (w.chains || []).some(function (c) { return c.indexOf("solana:") === 0; }) && wallets.indexOf(w) < 0) wallets.push(w); } return function () {}; } };
+  window.addEventListener("wallet-standard:register-wallet", function (e) { try { e.detail(reg); } catch (x) {} });
+  try { window.dispatchEvent(new CustomEvent("wallet-standard:app-ready", { detail: reg })); } catch (x) {}
+  function connect(w) {
+    return w.features["standard:connect"].connect().then(function (out) {
+      var acc = (out && out.accounts && out.accounts[0]) || (w.accounts && w.accounts[0]);
+      if (!acc) throw new Error("no account");
+      S.wallet = w; S.account = acc.address; S.acc = acc;
+      $("connect").textContent = short(acc.address);
+      return loadTally();
+    });
+  }
+  function pickWallet() {
+    return new Promise(function (ok, bad) {
+      if (S.wallet) return ok();
+      if (wallets.length === 1) return connect(wallets[0]).then(ok, bad);
+      var list = $("wlist"); list.innerHTML = "";
+      $("wnone").textContent = wallets.length ? "" : "no solana wallet found in this browser. install phantom, solflare or backpack.";
+      wallets.forEach(function (w) {
+        var b = document.createElement("button"); b.type = "button";
+        b.innerHTML = '<img alt="" src="' + String(w.icon || "").replace(/"/g, "") + '"><span></span>'; b.querySelector("span").textContent = w.name;
+        b.addEventListener("click", function () { $("wdlg").close(); connect(w).then(ok, bad); });
+        list.appendChild(b);
+      });
+      $("wdlg").showModal();
+      $("wdlg").addEventListener("close", function once() { $("wdlg").removeEventListener("close", once); setTimeout(function () { if (!S.wallet) bad(new Error("no wallet")); }, 50); });
+    });
+  }
+  $("wclose").addEventListener("click", function () { $("wdlg").close(); });
+  $("connect").addEventListener("click", function () { pickWallet().catch(function (e) { if (e && e.message !== "no wallet") msg("wallet didn't connect: " + (e.message || "declined"), true); }); });
+
+  // ---------- voting
+  function holding(owner) {
+    return rpc("getTokenAccountsByOwner", [owner, { mint: CFG.mint }, { encoding: "jsonParsed" }]).then(function (r) {
+      var s = 0; ((r && r.value) || []).forEach(function (a) { var t = a.account.data.parsed.info.tokenAmount; s += Number(t.uiAmountString || t.uiAmount || 0); }); return s;
+    });
+  }
+  function sendSigned(bytes) {
+    var f = S.wallet.features, chain = "solana:mainnet";
+    if (f["solana:signAndSendTransaction"]) {
+      return f["solana:signAndSendTransaction"].signAndSendTransaction({ account: S.acc, transaction: bytes, chain: chain }).then(function (out) {
+        var o = Array.isArray(out) ? out[0] : out; return TX.enc(new Uint8Array(o.signature));
+      });
+    }
+    return f["solana:signTransaction"].signTransaction({ account: S.acc, transaction: bytes, chain: chain }).then(function (out) {
+      var o = Array.isArray(out) ? out[0] : out, signed = new Uint8Array(o.signedTransaction);
+      return rpc("sendTransaction", [TX.b64(signed), { encoding: "base64", preflightCommitment: "confirmed" }]);
+    });
+  }
+  function vote(god) {
+    if (!CFG.mint || !CFG.temple || S.busy) return;
+    var name = god.toUpperCase();
+    S.busy = true; renderTally();
+    pickWallet().then(function () {
+      msg("checking your $MYTH…");
+      return holding(S.account);
+    }).then(function (amt) {
+      var p = S.market && S.market.priceUsd, need = p ? 50 / p : 0;
+      if (amt <= 0 || amt < need) {
+        throw new Error("hold $50 of $MYTH to vote. this wallet holds " + tok(amt) + (p ? " (" + usd(amt * p) + ")" : "") + ".");
+      }
+      msg("sign the vote for " + name + " in your wallet…");
+      return rpc("getLatestBlockhash", [{ commitment: "confirmed" }]).then(function (r) {
+        return sendSigned(TX.vote(S.account, CFG.temple, r.value.blockhash, god));
+      });
+    }).then(function (sig) {
+      msg("vote for " + name + " sent. <a href='https://solscan.io/tx/" + sig + "' target='_blank' rel='noopener'>view tx ↗</a> the tally updates in a few seconds.", false, true);
+      setTimeout(loadTally, 6000); setTimeout(loadTally, 15000);
+    }).catch(function (e) {
+      var m = (e && e.message) || "";
+      if (m === "no wallet") msg("");
+      else if (/reject|declin|cancel/i.test(m)) msg("vote cancelled.");
+      else if (/hold \$50/.test(m)) msg(m, true);
+      else msg("the vote didn't go through: " + m.slice(0, 120), true);
+    }).then(function () { S.busy = false; renderTally(); });
+  }
+
+  window.__myth = { nextRound: nextRound, shares: shares, S: S, vote: vote };
+})();
+
+</script>
+</body>
+</html>
